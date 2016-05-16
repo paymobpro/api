@@ -16,6 +16,7 @@ interface PayMobNotify {
 
     /**
      * OnSubscribeStart : извещение о попытке инициации подписки
+     * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер платформы присылает уведомления
      * @param int $request_id идентификатор трансакции
      * @param int $subscribe_id идентификатор подописки
      * @param int $replace_id идентификатор заменяемой подписки
@@ -24,18 +25,20 @@ interface PayMobNotify {
      * @param string $handle параметр партнера
      * @return int
      */
-    public function OnSubscribeStart(int $request_id, int $subscribe_id, int $replace_id, int $client, int $goods_id, string $handle );
+    public function OnSubscribeStart(string $auth, int $request_id, int $subscribe_id, int $replace_id, int $client, int $goods_id, string $handle );
 
     /**
      * OnSubscribeActivate : уведомление об успешной активации подписки
+     * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер платформы присылает уведомления
      * @param int $request_id идентификатор трансакции
      * @param int $subscribe_id идентификатор подписки
      * @param string $handle параметр партнера
      * @return int
      */
-    public function OnSubscribeActivate(int $request_id, int $subscribe_id, string $handle );
+    public function OnSubscribeActivate(string $auth, int $request_id, int $subscribe_id, string $handle );
 
     /** OnSubscribeNotify : уведомление об успешном плановом списании.
+     * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер платформы присылает уведомления
      * @param int $request_id
      * @param int $subscribe_id
      * @param float $sum : сумма списания
@@ -43,10 +46,11 @@ interface PayMobNotify {
      * @param string $handle
      * @return int
      */
-    public function OnSubscribeNotify(int $request_id, int $subscribe_id, float $sum, int $pay_time, string $handle);
+    public function OnSubscribeNotify(string $auth, int $request_id, int $subscribe_id, float $sum, int $pay_time, string $handle);
 
     /**
      * OnSubscribeSuspend : уведомление о неуспешном списании
+     * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер платформы присылает уведомления
      * @param int $request_id
      * @param int $subscribe_id
      * @param int $pay_time : дата операции
@@ -54,10 +58,11 @@ interface PayMobNotify {
      * @param string $handle
      * @return int
      */
-    public function OnSubscribeSuspend(int $request_id, int $subscribe_id, int $pay_time, int $next_pay_time, string $handle);
+    public function OnSubscribeSuspend(string $auth, int $request_id, int $subscribe_id, int $pay_time, int $next_pay_time, string $handle);
 
     /**
      * OnSubscribeCancel : уведомление об отмене подписки
+     * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер платформы присылает уведомления
      * @param int $request_id
      * @param int $subscribe_id
      * @param int $code : код отмены
@@ -65,10 +70,11 @@ interface PayMobNotify {
      * @param string $handle
      * @return int
      */
-    public function OnSubscribeCancel(int $request_id, int $subscribe_id, int $code, string $message, string $handle);
+    public function OnSubscribeCancel(string $auth, int $request_id, int $subscribe_id, int $code, string $message, string $handle);
 
     /**
      * OnSubscribeNotice : уведомление об ошибках при выполнении операций
+     * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер платформы присылает уведомления
      * @param int $request_id
      * @param int $subscribe_id
      * @param int $transaction_id : идентификатор запроса (см API запросов)
@@ -105,10 +111,11 @@ interface PayMobNotify {
     * 2532 Повторное обращение.
     * 2533 У данного абонента нет подписок в стадии ожидания подтверждения.
 */
-    public function OnSubscribeNotice(int $request_id, int $subscribe_id, int $transaction_id, int $code, string $message );
+    public function OnSubscribeNotice(string $auth, int $request_id, int $subscribe_id, int $transaction_id, int $code, string $message );
 
     /**
      * OnSubscribeStat : сообщает информацию о подписке. Для инциаилизации необходимо вызвать SubscribeStat
+     * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер платформы присылает уведомления
      * @param int $request_id
      * @param Array $info
 
@@ -131,7 +138,7 @@ interface PayMobNotify {
      * @param string $handle
      * @return int
      */
-    public function OnSubscribeStat(int $request_id, Array $info, string $handle);
+    public function OnSubscribeStat(string $auth, int $request_id, Array $info, string $handle);
 }
 
 
@@ -145,25 +152,27 @@ class PayMob {
 
     /**
      * GetWMCProductLink : возвращает шаблон урла для отправки посетителя по протоколу WapClick Mobile Commerce (WMC)
+     * @param int $partner_id : идентификатор партнера
      * @param string $auth : код авторизации клиента. Получается в админке PayMob.pro
      * @param int $product_id : идентификатор продукта.
      * @return string : "http://product_id/?handle=%HANDLE%" возвратит URL для отправки трафика. В позиции для указания
      *                  хендла посетителя будет помещена строка %HANDLE%. Ее необходимо будет заменить на реальный
      *                  идентификатор посетителя при отправке трафика.
      */
-    public function GetWMCProductLink (string $auth, int $product_id)
+    public function GetWMCProductLink (int $partner_id, string $auth, int $product_id)
     {
         return ""; //URL либо throw Exception в случае ошибки.
     }
 
     /**
      * GetSubscribeStatAsync : запрашивает информацию о подписке. Данные прийдут в OnSubscribeStat.
+     * @param int $partner_id : идентификатор партнера
      * @param string $auth
      * @param int $subscribe_id : идентификатор подписки.
      * @return int : возвращает идентификатор запроса. Он будет первым параметром в OnSubscribeStat, для сопоставления
      * вызова и ответа.
      */
-    public function GetSubscribeStatAsync (string $auth, int $subscribe_id)
+    public function GetSubscribeStatAsync (int $partner_id, string $auth, int $subscribe_id)
     {
         $request_id = (int) 11111;
         return $request_id;
