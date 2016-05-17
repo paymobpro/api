@@ -179,3 +179,12 @@ class PayMob {
     }
 }
 
+/*
+Форматы урлов
+http://paymob.pro/e/tds/v1/in/partner_id/product_id/landing_id/tracking
+принимает трафик от партнера.
+partner_id - цифры
+product_id - цифры
+landing_id - цифры
+tracking - цифры-буквы до 32 символов
+*/
