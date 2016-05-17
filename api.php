@@ -181,10 +181,8 @@ class PayMob {
 
 /*
 Форматы урлов
-http://paymob.pro/e/tds/v1/in/partner_id/product_id/landing_id/tracking
+http://paymob.pro/e/tds/v1/in/landing_id/tracking
 принимает трафик от партнера.
-partner_id - цифры
-product_id - цифры
-landing_id - цифры
+landing_id - цифры - по нему резолвится партнер и продукт
 tracking - цифры-буквы до 32 символов
 */
