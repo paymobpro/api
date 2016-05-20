@@ -1,4 +1,18 @@
 <?
+/**
+ * Возвращаемое значение методов интерфейса PayMobNotify . Предназначено для информирования вызывающей стороны о статусе 
+ * выполнения операции а так же сообщении ей дополнительных сведений.
+ */
+class PayMobResponse {
+    /**
+     * @param  int $confirm . Единственный обязательный параметр. Возвращает request_id как признак корректной отработки 
+     * уведомления. Дополнительно могут добавляться другие поля, специфичные для каждого уведомления.
+     * @param optional array $aux. Именованный массив с дополнительными данными ответа на уведомление. В случае если данных нет, 
+     * то параметр может отсутствовать. Его наличие проверяться не будет. 
+     */
+    $confirm;
+    $aux;
+}
 /*
  * Описание интерфейса, который должен реализовать партнер для приема асинхронных уведомлений от платформы.
  * Каждый метод интерфейса должен вернуть значение request_id с целью уведомления платформы, что данные приняты и обработаны.
@@ -26,7 +40,7 @@ interface PayMobNotify {
      * @param int $client телефон абонента
      * @param int $goods_id идентификатор товара
      * @param string $handle параметр партнера
-     * @return int
+     * @return PayMobResponse
      */
     public function OnSubscribeStart(string $auth, int $request_id, int $subscribe_id, int $replace_id, int $client, int $goods_id, string $handle );
 
@@ -37,7 +51,7 @@ interface PayMobNotify {
      * @param int $request_id идентификатор трансакции
      * @param int $subscribe_id идентификатор подписки
      * @param string $handle параметр партнера
-     * @return int
+     * @return PayMobResponse
      */
     public function OnSubscribeActivate(string $auth, int $request_id, int $subscribe_id, string $handle );
 
@@ -49,7 +63,7 @@ interface PayMobNotify {
      * @param float $sum : сумма списания
      * @param int $pay_time : дата списания в формате unixtime/UTC
      * @param string $handle
-     * @return int
+     * @return PayMobResponse
      */
     public function OnSubscribeNotify(string $auth, int $request_id, int $subscribe_id, float $sum, int $pay_time, string $handle);
 
@@ -62,7 +76,7 @@ interface PayMobNotify {
      * @param int $pay_time : дата операции
      * @param int $next_pay_time : дата следующей попытки
      * @param string $handle
-     * @return int
+     * @return PayMobResponse
      */
     public function OnSubscribeSuspend(string $auth, int $request_id, int $subscribe_id, int $pay_time, int $next_pay_time, string $handle);
 
@@ -75,7 +89,7 @@ interface PayMobNotify {
      * @param int $code : код отмены
      * @param string $message : текстовая расшифровка кода отмены
      * @param string $handle
-     * @return int
+     * @return PayMobResponse
      */
     public function OnSubscribeCancel(string $auth, int $request_id, int $subscribe_id, int $code, string $message, string $handle);
 
@@ -88,7 +102,7 @@ interface PayMobNotify {
      * @param int $transaction_id : идентификатор запроса (см API запросов)
      * @param int $code : код ошибки
      * @param string $message : текстовая расшифровка кода.
-     * @return int
+     * @return PayMobResponse
      *
      *
      * Данное API будет использоваться так же и для других типов подписок (SMS). Описание кодов включает и информацию
@@ -122,7 +136,12 @@ interface PayMobNotify {
     public function OnSubscribeNotice(string $auth, int $request_id, int $subscribe_id, int $transaction_id, int $code, string $message );
 
     /**
-     * OnSubscribeStat : сообщает информацию о подписке. Для инциаилизации необходимо вызвать SubscribeStat
+     * OnSubscribeStat : сообщает информацию о начале процедуры подписки. Для списания, необходимо ответить PayMobResponse со значением
+     * $aux['subscribe']=(bool) true; Во всех остальных случаях апстрим будет извещен о том, что подписывать абонента не нужно.
+     * !!!! 
+     * NB - OnSubscribeStart синхронный метод, вызывающийся в процессе подписки. Скорость его отработки напрямую влияет как быстро
+     * начнется списание у абонента. Не заставляйте серферов ждать 
+     * !!!!
      * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер
      * платформы присылает уведомления
      * @param int $request_id
@@ -145,7 +164,8 @@ interface PayMobNotify {
     * "closed":"f"
 
      * @param string $handle
-     * @return int
+     * @return PayMobResponse
+     * 
      */
     public function OnSubscribeStat(string $auth, int $request_id, Array $info, string $handle);
 }
@@ -190,7 +210,7 @@ class PayMob {
 
 /*
 Форматы урлов
-http://paymob.pro/e/tds/v1/in/landing_id/tracking
+http://paymob.pro/e/tds/v1/in/landing_id/%HANDLE%
 принимает трафик от партнера.
 landing_id - цифры - по нему резолвится партнер и продукт
 tracking - цифры-буквы до 32 символов
