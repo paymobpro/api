@@ -184,8 +184,8 @@ class PayMob {
      * @param int $partner_id : идентификатор партнера
      * @param string $auth : код авторизации клиента. Получается в админке PayMob.pro
      * @param int $product_id : идентификатор продукта.
-     * @return string : "http://product_id/?handle=%HANDLE%" возвратит URL для отправки трафика. В позиции для указания
-     *                  хендла посетителя будет помещена строка %HANDLE%. Ее необходимо будет заменить на реальный
+     * @return string : "http://paymob.pro/e/tds/v1/in/landing_id/%TRACKING% возвратит URL для отправки трафика. В позиции для указания
+     *                  хендла посетителя будет помещена строка %TRACKING%. Ее необходимо будет заменить на реальный
      *                  идентификатор посетителя при отправке трафика.
      */
     public function GetWMCProductLink (int $partner_id, string $auth, int $product_id)
@@ -210,7 +210,7 @@ class PayMob {
 
 /*
 Форматы урлов
-http://paymob.pro/e/tds/v1/in/landing_id/%HANDLE%
+http://paymob.pro/e/tds/v1/in/landing_id/%TRACKING%
 принимает трафик от партнера.
 landing_id - цифры - по нему резолвится партнер и продукт
 tracking - цифры-буквы до 32 символов
