@@ -79,11 +79,11 @@ interface PayMobNotify {
      * @param int $request_id
      * @param int $subscribe_id
      * @param int $pay_time : дата операции
-     * @param int $next_pay_time : дата следующей попытки
+     * @param int $next_repay : дата следующей попытки
      * @param string $handle
      * @return PayMobResponse
      */
-    public function OnSubscribeSuspend(string $auth, int $request_id, int $subscribe_id, int $pay_time, int $next_pay_time, string $handle);
+    public function OnSubscribeSuspend(string $auth, int $request_id, int $subscribe_id, int $pay_time, int $next_repay, string $handle);
 
     /**
      * OnSubscribeCancel : уведомление об отмене подписки
