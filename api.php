@@ -107,6 +107,7 @@ interface PayMobNotify {
      * @param int $transaction_id : идентификатор запроса (см API запросов)
      * @param int $code : код ошибки
      * @param string $message : текстовая расшифровка кода.
+     * @param string $handle
      * @return PayMobResponse
      *
      *
@@ -138,7 +139,7 @@ interface PayMobNotify {
     * 2532 Повторное обращение.
     * 2533 У данного абонента нет подписок в стадии ожидания подтверждения.
 */
-    public function OnSubscribeNotice(string $auth, int $request_id, int $subscribe_id, int $transaction_id, int $code, string $message );
+    public function OnSubscribeNotice(string $auth, int $request_id, int $subscribe_id, int $transaction_id, int $code, string $message, string $handle );
 
     /**
      * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер
