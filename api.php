@@ -183,12 +183,12 @@ class PayMob {
      * GetWMCProductLink : возвращает шаблон урла для отправки посетителя по протоколу WapClick Mobile Commerce (WMC)
      * @param int $partner_id : идентификатор партнера
      * @param string $auth : код авторизации клиента. Получается в админке PayMob.pro
-     * @param int $product_id : идентификатор продукта.
+     * @param int $landing_id : идентификатор лендинга из админки.
      * @return string : "http://paymob.pro/e/tds/v1/in/landing_id/%TRACKING% возвратит URL для отправки трафика. В позиции для указания
      *                  хендла посетителя будет помещена строка %TRACKING%. Ее необходимо будет заменить на реальный
      *                  идентификатор посетителя при отправке трафика.
      */
-    public function GetWMCProductLink (int $partner_id, string $auth, int $product_id)
+    public function GetWMCProductLink (int $partner_id, string $auth, int $landing_id)
     {
         return ""; //URL либо throw Exception в случае ошибки.
     }
