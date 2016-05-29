@@ -162,6 +162,7 @@ interface PayMobNotify {
     * "result":"0" код операции подписки
     * "repay_result":"0" код операции ребилла
     * "closed":"f"
+    * "landing_id" : 1 идентификатор лендинга
 
      * @param string $handle
      * @return PayMobResponse
