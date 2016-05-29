@@ -1,4 +1,10 @@
 <?
+
+/** 
+ * 
+ * Сумма трансакций всегда указывается в копейках.
+*/
+
 /**
  * Возвращаемое значение методов интерфейса PayMobNotify . Предназначено для информирования вызывающей стороны о статусе 
  * выполнения операции а так же сообщении ей дополнительных сведений.
@@ -140,35 +146,6 @@ interface PayMobNotify {
     * 2533 У данного абонента нет подписок в стадии ожидания подтверждения.
 */
     public function OnSubscribeNotice(string $auth, int $request_id, int $subscribe_id, int $transaction_id, int $code, string $message, string $handle );
-
-    /**
-     * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер
-     * платформы присылает уведомления
-     * @param int $request_id
-     * @param Array $info
-
-    * "client_id":"79268638461" телефон абонента
-    * "subscribe_id":"1234567890" идентификатор подписки
-    * "goods_id":"1" идентификатор товара
-    * "amount":"100" сумма последней трансакции
-    * "amount_made":"100" сумма всех трансакций
-    * "next_repay":"123123213" дата следующего ребилла. unixtime/UTC
-    * "till":"123123213" дата окончания подписки. unixtime/UTC
-    * "repay_expected":"6" ожидаемое количество ребиллов
-    * "repay_made":"1" реально сделанное количество ребиллов
-    * "repay_missed":"0" количество неуспешных ребиллов
-    * "stage":"active" статус подписки
-    * "repay_stage":"auth" статус ребилла
-    * "result":"0" код операции подписки
-    * "repay_result":"0" код операции ребилла
-    * "closed":"f"
-    * "landing_id" : 1 идентификатор лендинга
-
-     * @param string $handle
-     * @return PayMobResponse
-     * 
-     */
-    public function OnSubscribeStat(string $auth, int $request_id, Array $info, string $handle);
 }
 
 
@@ -194,13 +171,12 @@ class PayMob {
         return ""; //URL либо throw Exception в случае ошибки.
     }
 
-    /**
-     * GetSubscribeStatAsync : запрашивает информацию о подписке. Данные прийдут в OnSubscribeStat.
+      /**
+     * GetSubscribeStatSync : возвращает информацию о подписке. 
      * @param int $partner_id : идентификатор партнера
      * @param string $auth
      * @param int $subscribe_id : идентификатор подписки.
-     * @return int : возвращает идентификатор запроса. Он будет первым параметром в OnSubscribeStat, для сопоставления
-     * вызова и ответа.
+     * @return SubscribeInfo : структуру с данными подписки.
      */
     public function GetSubscribeStatAsync (int $partner_id, string $auth, int $subscribe_id)
     {
@@ -208,7 +184,22 @@ class PayMob {
         return $request_id;
     }
 }
-
+class SubscribeInfo {
+    int client_id:79268638461 //msisdn код абонента (его телефон)
+    int subscribe_id:1234567890 // идентификатор подписки
+    int goods_id:1 // идентификатор товара
+    int amount:100 // сумма последней трансакции 
+    int amount_made:100 //сумма всех трансакций
+    unixtime next_repay:123123213// дата следующего ребилла. unixtime/UTC
+    unixtime till:123123213 // дата окончания подписки. unixtime/UTC
+    unixtime repay_expected:6 // ожидаемое количество ребиллов
+    int repay_made:1 реально сделанное количество ребиллов
+    int repay_missed:0 количество неуспешных ребиллов
+    int status:5 // последний статус подписки
+    int result:0 // код операции подписки
+    int repay_result:0 // код операции ребилла
+    int landing_id : 1 // идентификатор лендинга
+}
 /*
 Форматы урлов
 http://paymob.pro/e/tds/v1/in/landing_id/%TRACKING%
