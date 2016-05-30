@@ -178,7 +178,7 @@ class PayMob {
      * @param int $subscribe_id : идентификатор подписки.
      * @return SubscribeInfo : структуру с данными подписки.
      */
-    public function GetSubscribeStatAsync (int $partner_id, string $auth, int $subscribe_id)
+    public function GetSubscribeStatSync (int $partner_id, string $auth, int $subscribe_id)
     {
         $request_id = (int) 11111;
         return $request_id;
