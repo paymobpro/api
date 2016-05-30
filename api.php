@@ -166,7 +166,7 @@ class PayMob {
      *                  хендла посетителя будет помещена строка %TRACKING%. Ее необходимо будет заменить на реальный
      *                  идентификатор посетителя при отправке трафика.
      */
-    public function GetWMCProductLink (int $partner_id, string $auth, int $landing_id)
+    public function getWMCProductLink (int $partner_id, string $auth, int $landing_id)
     {
         return ""; //URL либо throw Exception в случае ошибки.
     }
@@ -178,7 +178,7 @@ class PayMob {
      * @param int $handle : идентификатор подписки.
      * @return SubscribeInfo : структуру с данными подписки.
      */
-    public function GetSubscribeStatSync (int $partner_id, string $auth, int $handle)
+    public function getSubscribeStatSync (int $partner_id, string $auth, int $handle)
     {
         $request_id = (int) 11111;
         return $request_id;
