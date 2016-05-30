@@ -50,10 +50,11 @@ interface PayMobNotify {
      * @param int $replace_id идентификатор заменяемой подписки
      * @param int $client телефон абонента
      * @param int $goods_id идентификатор товара
+     * @param string $operator строковоый идентификатор оператора
      * @param string $tracking параметр партнера
      * @return PayMobResponse
      */
-    public function OnSubscribeStart(string $auth, int $request_id, int $handle, int $replace_id, int $client, int $goods_id, string $tracking );
+    public function OnSubscribeStart(string $auth, int $request_id, int $handle, int $replace_id, int $client, int $goods_id, string $operator, string $tracking );
 
     /**
      * OnSubscribeActivate : уведомление об успешной активации подписки
@@ -199,6 +200,7 @@ class SubscribeInfo {
     int result:0 // код операции подписки
     int repay_result:0 // код операции ребилла
     int landing_id : 1 // идентификатор лендинга
+    string operator : "tele2" //строковый идентификатор оператора
     string  tracking : "11-111-111" // строка отслеживания пользователя
 }
 /*
