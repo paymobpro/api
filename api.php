@@ -28,7 +28,7 @@ class PayMobResponse {
 interface PayMobNotify {
 
     /**
-     * Handle : параметр партнера. Используется для сопоставления вызовов API и идентификатора посетителя на сайте партнера, 
+     * tracking : параметр партнера. Используется для сопоставления вызовов API и идентификатора посетителя на сайте партнера, 
      * которым этот вызов относится.
      * Идентификатор передается при отправке трафика, либо при запросе информации о подписке, сохраняется на стороне платформы
      * и в дальнейшем передается
@@ -46,74 +46,74 @@ interface PayMobNotify {
      * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер
      * платформы присылает уведомления
      * @param int $request_id идентификатор трансакции
-     * @param int $subscribe_id идентификатор подописки
+     * @param int $handle идентификатор подописки
      * @param int $replace_id идентификатор заменяемой подписки
      * @param int $client телефон абонента
      * @param int $goods_id идентификатор товара
-     * @param string $handle параметр партнера
+     * @param string $tracking параметр партнера
      * @return PayMobResponse
      */
-    public function OnSubscribeStart(string $auth, int $request_id, int $subscribe_id, int $replace_id, int $client, int $goods_id, string $handle );
+    public function OnSubscribeStart(string $auth, int $request_id, int $handle, int $replace_id, int $client, int $goods_id, string $tracking );
 
     /**
      * OnSubscribeActivate : уведомление об успешной активации подписки
      * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно 
      *  сервер платформы присылает уведомления
      * @param int $request_id идентификатор трансакции
-     * @param int $subscribe_id идентификатор подписки
-     * @param string $handle параметр партнера
+     * @param int $handle идентификатор подписки
+     * @param string $tracking параметр партнера
      * @return PayMobResponse
      */
-    public function OnSubscribeActivate(string $auth, int $request_id, int $subscribe_id, string $handle );
+    public function OnSubscribeActivate(string $auth, int $request_id, int $handle, string $tracking );
 
     /** OnSubscribeNotify : уведомление об успешном плановом списании.
      * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер 
      * платформы присылает уведомления
      * @param int $request_id
-     * @param int $subscribe_id
+     * @param int $handle
      * @param float $sum : сумма списания
      * @param int $pay_time : дата списания в формате unixtime/UTC
-     * @param string $handle
+     * @param string $tracking
      * @return PayMobResponse
      */
-    public function OnSubscribeNotify(string $auth, int $request_id, int $subscribe_id, float $sum, int $pay_time, string $handle);
+    public function OnSubscribeNotify(string $auth, int $request_id, int $handle, float $sum, int $pay_time, string $tracking);
 
     /**
      * OnSubscribeSuspend : уведомление о неуспешном списании
      * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер 
      * платформы присылает уведомления
      * @param int $request_id
-     * @param int $subscribe_id
+     * @param int $handle
      * @param int $pay_time : дата операции
      * @param int $next_repay : дата следующей попытки
-     * @param string $handle
+     * @param string $tracking
      * @return PayMobResponse
      */
-    public function OnSubscribeSuspend(string $auth, int $request_id, int $subscribe_id, int $pay_time, int $next_repay, string $handle);
+    public function OnSubscribeSuspend(string $auth, int $request_id, int $handle, int $pay_time, int $next_repay, string $tracking);
 
     /**
      * OnSubscribeCancel : уведомление об отмене подписки
      * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер 
      * платформы присылает уведомления
      * @param int $request_id
-     * @param int $subscribe_id
+     * @param int $handle
      * @param int $code : код отмены
      * @param string $message : текстовая расшифровка кода отмены
-     * @param string $handle
+     * @param string $tracking
      * @return PayMobResponse
      */
-    public function OnSubscribeCancel(string $auth, int $request_id, int $subscribe_id, int $code, string $message, string $handle);
+    public function OnSubscribeCancel(string $auth, int $request_id, int $handle, int $code, string $message, string $tracking);
 
     /**
      * OnSubscribeNotice : уведомление об ошибках при выполнении операций
      * @param string $auth код авторизации. равен коду авторизации партнера. Используется для подтверждения, что это именно сервер
      * платформы присылает уведомления
      * @param int $request_id
-     * @param int $subscribe_id
+     * @param int $handle
      * @param int $transaction_id : идентификатор запроса (см API запросов)
      * @param int $code : код ошибки
      * @param string $message : текстовая расшифровка кода.
-     * @param string $handle
+     * @param string $tracking
      * @return PayMobResponse
      *
      *
@@ -145,7 +145,7 @@ interface PayMobNotify {
     * 2532 Повторное обращение.
     * 2533 У данного абонента нет подписок в стадии ожидания подтверждения.
 */
-    public function OnSubscribeNotice(string $auth, int $request_id, int $subscribe_id, int $transaction_id, int $code, string $message, string $handle );
+    public function OnSubscribeNotice(string $auth, int $request_id, int $handle, int $transaction_id, int $code, string $message, string $tracking );
 }
 
 
@@ -175,10 +175,10 @@ class PayMob {
      * GetSubscribeStatSync : возвращает информацию о подписке. 
      * @param int $partner_id : идентификатор партнера
      * @param string $auth
-     * @param int $subscribe_id : идентификатор подписки.
+     * @param int $handle : идентификатор подписки.
      * @return SubscribeInfo : структуру с данными подписки.
      */
-    public function GetSubscribeStatSync (int $partner_id, string $auth, int $subscribe_id)
+    public function GetSubscribeStatSync (int $partner_id, string $auth, int $handle)
     {
         $request_id = (int) 11111;
         return $request_id;
@@ -186,7 +186,7 @@ class PayMob {
 }
 class SubscribeInfo {
     int client_id:79268638461 //msisdn код абонента (его телефон)
-    int subscribe_id:1234567890 // идентификатор подписки
+    int handle:1234567890 // идентификатор подписки
     int goods_id:1 // идентификатор товара
     int amount:100 // сумма последней трансакции 
     int amount_made:100 //сумма всех трансакций
@@ -199,6 +199,7 @@ class SubscribeInfo {
     int result:0 // код операции подписки
     int repay_result:0 // код операции ребилла
     int landing_id : 1 // идентификатор лендинга
+    string  tracking : "11-111-111" // строка отслеживания пользователя
 }
 /*
 Форматы урлов
