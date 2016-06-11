@@ -76,3 +76,7 @@ bill_id - идентификатор списания в платформе.
 Формируется при невозможности списания с пользователя.
 - Событие operations/suspend
 
+
+## Настройка
+
+![Step1](https://raw.githubusercontent.com/paymobpro/api/master/img/step1.png "Step 1")
