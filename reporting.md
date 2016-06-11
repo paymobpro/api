@@ -83,17 +83,17 @@ bill_id - идентификатор списания в платформе.
 ![Step1](https://raw.githubusercontent.com/paymobpro/api/master/img/step1.png "Step 1")
 
 ### Step2
-![Step2](https://raw.githubusercontent.com/paymobpro/api/master/img/step1.png "Step 2")
+![Step2](https://raw.githubusercontent.com/paymobpro/api/master/img/step2.png "Step 2")
 
 ### Step3
-![Step3](https://raw.githubusercontent.com/paymobpro/api/master/img/step1.png "Step 3")
+![Step3](https://raw.githubusercontent.com/paymobpro/api/master/img/step3.png "Step 3")
 
 ### Step4
-![Step4](https://raw.githubusercontent.com/paymobpro/api/master/img/step1.png "Step 4")
+![Step4](https://raw.githubusercontent.com/paymobpro/api/master/img/step4.png "Step 4")
 
 ### Step5
-![Step5](https://raw.githubusercontent.com/paymobpro/api/master/img/step1.png "Step 5")
+![Step5](https://raw.githubusercontent.com/paymobpro/api/master/img/step5.png "Step 5")
 
 ### Step6
-![Step6](https://raw.githubusercontent.com/paymobpro/api/master/img/step1.png "Step 6")
+![Step6](https://raw.githubusercontent.com/paymobpro/api/master/img/step6.png "Step 6")
 
