@@ -97,3 +97,6 @@ bill_id - идентификатор списания в платформе.
 ### Step6
 ![Step6](https://raw.githubusercontent.com/paymobpro/api/master/img/step6.png "Step 6")
 
+### Step7
+- Заполнить в настройках продукта Tracker-id
+- Заполнить в настройках продукта идентификаторы custom dimensions для продукта, оператора и т.д. Обратите внимание, что после создания Google не рекомендует их менять.
